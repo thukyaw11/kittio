@@ -3,7 +3,9 @@
     <a-row>
       <a-col :xs="1" :sm="6" :md="6" :lg="6" :xl="6"></a-col>
       <a-col :xs="22" :sm="12" :md="12" :lg="12" :xl="12">
-        <br />
+        <div style="margin : 0 auto; height: 100%; width : 350px;">
+          <img src="../../assets/signup.jpg" alt="kitty" style="margin: 0 auto" />
+        </div>
         <div style="font-size : 30px">Sign Up</div>
         <br />
         <div v-if="error">
@@ -11,17 +13,21 @@
         </div>
         <br />
         <md-field>
+          <md-icon>account_circle</md-icon>
           <label>User Name</label>
           <md-textarea v-model="username" md-autogrow></md-textarea>
         </md-field>
         <md-field>
+          <md-icon>email</md-icon>
           <label>Email</label>
           <md-textarea v-model="email" md-autogrow></md-textarea>
         </md-field>
         <md-field>
-          <label>Password toggle</label>
+          <md-icon>lock_open</md-icon>
+          <label>Password</label>
           <md-input v-model="password" type="password"></md-input>
         </md-field>
+        <router-link to="/signin">Already have an account?</router-link>
 
         <md-button
           class="md-raised md-primary"
@@ -32,10 +38,6 @@
       </a-col>
       <a-col :xs="1" :sm="6" :md="6" :lg="6" :xl="6"></a-col>
     </a-row>
-
-    <div style="margin : 0 auto; height: 200px; width : 200px;margin-top: 100px">
-      <img src="../../assets/logincat.png" alt="kitty" />
-    </div>
   </div>
 </template>
 

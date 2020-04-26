@@ -4,7 +4,9 @@
     <a-row>
       <a-col :xs="1" :sm="6" :md="6" :lg="6" :xl="6"></a-col>
       <a-col :xs="22" :sm="12" :md="12" :lg="12" :xl="12">
-        <div style="font-size : 30px">Meow meow ... {{user}}</div>
+        <div style="font-size : 20px">Say "meow" to the world</div>
+        <br />
+        <br />
 
         <md-field style="padding: 10px 15px 10px 10px">
           <label>Description</label>
@@ -21,16 +23,18 @@
           ref="fileInput"
           @change="onFilePicked"
         />
-        <div v-if="imageURL">
+        <div v-if="imageURL" style="width : 300px; height : 100px">
           <img :src="imageURL" alt="preview" width="300" height="200" />
         </div>
 
         <md-button
-          class="md-raised md-primary"
-          style="float: right"
+          class="md-fab md-plain"
+          style="float: right;position: fixed; bottom : 30px; right: 30px"
           :disabled="!formisValid"
           @click="onCreateMeetup"
-        >Create Meetup</md-button>
+        >
+          <md-icon>near_me</md-icon>
+        </md-button>
       </a-col>
       <a-col :xs="1" :sm="6" :md="6" :lg="6" :xl="6"></a-col>
     </a-row>
@@ -50,12 +54,11 @@ export default {
     formisValid() {
       return this.description != "" && this.imageURL != "";
     },
-    user(){
+    user() {
       return this.$store.getters.user;
     }
   },
   methods: {
-
     onCreateMeetup() {
       if (!this.formisValid) {
         return;
@@ -64,11 +67,14 @@ export default {
         return;
       }
       console.log(this.$store.getters.user);
+      const dateNow = new Date(Date.now() - 20000);
       const meetupOption = {
-        username : this.$store.getters.user.username,
+        username: this.$store.getters.user.displayName,
         description: this.description,
-        image: this.image
+        image: this.image,
+        createdTime: dateNow
       };
+
       this.$store.dispatch("createNewMeetup", meetupOption);
       this.$router.push("/meetups");
     },
@@ -90,7 +96,6 @@ export default {
       });
       fileReader.readAsDataURL(files[0]);
       this.image = files[0];
-
     }
   }
 };

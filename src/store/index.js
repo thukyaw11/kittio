@@ -15,10 +15,10 @@ export default new Vuex.Store({
   },
   mutations: {
     CREATE_NEW_MEETUP(state, payload) {
+      console.log(payload);
       state.meetUps.push(payload);
     },
     SET_USER(state, payload) {
-      console.log(payload);
       state.user = payload;
 
     },
@@ -44,7 +44,7 @@ export default new Vuex.Store({
               description: obj[key].description,
               imgURL: obj[key].imageUrl,
               owner: obj[key].owner,
-              time: obj[key].time,
+              createdTime: obj[key].createdTime,
               creatorId: obj[key].creatorId
             })
           }
@@ -53,13 +53,12 @@ export default new Vuex.Store({
         .catch(error => console.log(error))
     },
     createNewMeetup({ commit, getters }, payload) {
-      console.log("From store" + payload.username);
+      
       const newMeetUp = {
         owner: payload.username,
-        time: 'Just now',
-        // imgURL: payload.imageURL,
         description: payload.description,
-        createorId: getters.user.id
+        createorId: getters.user.id,
+        createdTime : payload.createdTime.toString()
       }
       let imageUrl
       let key
@@ -107,7 +106,7 @@ export default new Vuex.Store({
              .then(()=>{
                const newUser = {
                  id: user.user.uid,
-                 username : user.user.providerData[0].displayName,
+                 displayName : user.user.providerData[0].displayName,
                  registeredMeetups: []
                }
                commit('SET_USER', newUser)
@@ -123,15 +122,18 @@ export default new Vuex.Store({
         })
     },
     signUserIn({ commit }, payload) {
+     
       commit('CLEAR_ERROR')
       firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
         .then(
           user => {
             const newUser = {
               id: user.user.uid,
-              name : user.user.displayName,
+              displayName : user.user.providerData[0].displayName,
               registeredMeetups: []
             }
+           
+
             commit('SET_USER', newUser)
           }
         ).catch(error => {
@@ -139,7 +141,7 @@ export default new Vuex.Store({
         })
     },
     autoSignIn({ commit }, payload) {
-      commit('SET_USER', { id: payload.uid, registeredMeetups: [] })
+      commit('SET_USER', { id: payload.uid,displayName: payload.providerData[0].displayName,registeredMeetups: [] })
     },
     logout({ commit }) {
       firebase.auth().signOut()

@@ -14,7 +14,10 @@
             </md-avatar>
 
             <div class="md-title">{{loadMeetup.owner}}</div>
-            <div class="md-subhead">{{loadMeetup.time}}</div>
+
+            <div class="md-subhead">
+              <timeago :datetime="time.createdTime"></timeago>
+            </div>
           </md-card-header>
 
           <md-card-media>
@@ -36,6 +39,14 @@
       </a-col>
       <a-col :xs="1" :sm="6" :md="6" :lg="6" :xl="6"></a-col>
     </a-row>
+    <md-button
+      class="md-fab md-plain"
+      style="float: right;position: fixed; bottom : 30px; right: 30px"
+      router
+      to="/meetups"
+    >
+      <md-icon>arrow_back_ios</md-icon>
+    </md-button>
   </div>
 </template>
 
@@ -45,6 +56,9 @@ export default {
   props: ["id"],
   computed: {
     loadMeetup() {
+      return this.$store.getters.loadMeetUp(this.id);
+    },
+    time() {
       return this.$store.getters.loadMeetUp(this.id);
     }
   }

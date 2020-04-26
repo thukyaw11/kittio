@@ -25,7 +25,7 @@
       </md-button>
     </md-toolbar>
 
-    <md-drawer :md-active.sync="showNavigation" md-swipeable>
+    <md-drawer :md-active.sync="showNavigation" md-swipeable style="position: fix">
       <md-toolbar class="md-transparent" md-elevation="0">
         <span class="md-title">Kittio</span>
       </md-toolbar>
@@ -41,6 +41,7 @@
           <md-icon>{{item.icon}}</md-icon>
           <span class="md-list-item-text">{{item.title}}</span>
         </md-list-item>
+        <div style="height : 1px; width : 90%; background: grey; margin: 0 auto"></div>
         <md-list-item v-if="isUserAuth" @click="logout">
           <md-icon>exit_to_app</md-icon>
           <span class="md-list-item-text">Logout</span>
@@ -66,7 +67,7 @@ export default {
   computed: {
     menuItems() {
       let menuItems = [
-        { icon: "face", title: "Sing Up", link: "/signup" },
+        { icon: "face", title: "Sign Up", link: "/signup" },
         { icon: "lock_open", title: "Sign In", link: "/signin" }
       ];
       if (this.isUserAuth) {

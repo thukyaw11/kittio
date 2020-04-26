@@ -9,6 +9,7 @@ import 'vue-material/dist/theme/default.css'
 import Antd from 'ant-design-vue';
 import * as firebase from 'firebase';
 import Alert from './components/share/Alert'
+import VueTimeago from 'vue-timeago'
 
 import 'ant-design-vue/dist/antd.css';
 Vue.config.productionTip = false;
@@ -17,7 +18,16 @@ Vue.use(Antd);
 Vue.component('app-alert',Alert);
 
   
-
+Vue.use(VueTimeago, {
+  name: 'Timeago', // Component name, `Timeago` by default
+  locale: 'en', // Default locale
+  // We use `date-fns` under the hood
+  // So you can use all locales from it
+  locales: {
+    'zh-CN': require('date-fns/locale/zh_cn'),
+    ja: require('date-fns/locale/ja')
+  }
+})
 Vue.use(VueMaterial)
 
 Vue.config.productionTip = false
