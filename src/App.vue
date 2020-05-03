@@ -20,7 +20,7 @@
           </md-button>
         </router-link>
       </div>
-      <md-button class="md-small-hide" v-if="isUserAuth" @click="logout"> 
+      <md-button class="md-small-hide" v-if="isUserAuth" @click="logout">
         <md-icon>exit_to_app</md-icon> Logout
       </md-button>
     </md-toolbar>
@@ -77,6 +77,11 @@ export default {
             icon: "launch",
             title: "Create Pose",
             link: "/meetup/new"
+          },
+          {
+            icon : "supervisor_account",
+            title : "People on Kittio",
+            link : '/people'
           },
           { icon: "person", title: "My Account", link: "/profile" }
         ];

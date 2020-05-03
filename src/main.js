@@ -10,11 +10,13 @@ import Antd from 'ant-design-vue';
 import * as firebase from 'firebase';
 import Alert from './components/share/Alert'
 import VueTimeago from 'vue-timeago'
+import VueSweetalert2 from 'vue-sweetalert2';
 
 import 'ant-design-vue/dist/antd.css';
 Vue.config.productionTip = false;
 
 Vue.use(Antd);
+Vue.use(VueSweetalert2);
 Vue.component('app-alert',Alert);
 
   

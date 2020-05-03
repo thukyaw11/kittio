@@ -2,9 +2,9 @@
   <div>
     <br />
     <a-row>
-      <a-col :xs="1" :sm="6" :md="6" :lg="6" :xl="6"></a-col>
-      <a-col :xs="22" :sm="12" :md="12" :lg="12" :xl="12">
-        <md-card>
+      <a-col :xs="1" :sm="6" :md="8" :lg="8" :xl="8"></a-col>
+      <a-col :xs="22" :sm="12" :md="8" :lg="8" :xl="8">
+        <md-card  class="md-elevation-0">
           <md-card-header>
             <md-avatar>
               <img
@@ -16,7 +16,7 @@
             <div class="md-title">{{loadMeetup.owner}}</div>
 
             <div class="md-subhead">
-              <timeago :datetime="time.createdTime"></timeago>
+              <timeago :datetime="loadMeetup.createdTime"></timeago>
             </div>
           </md-card-header>
 
@@ -24,7 +24,7 @@
             <img :src="loadMeetup.imgURL" alt="People" />
           </md-card-media>
 
-          <md-card-content>{{loadMeetup.description}}</md-card-content>
+          <md-card-content><h3>{{loadMeetup.description}}</h3></md-card-content>
 
           <md-card-actions>
             <md-button class="md-icon-button">
@@ -37,7 +37,7 @@
           </md-card-actions>
         </md-card>
       </a-col>
-      <a-col :xs="1" :sm="6" :md="6" :lg="6" :xl="6"></a-col>
+      <a-col :xs="1" :sm="6" :md="8" :lg="8" :xl="8"></a-col>
     </a-row>
     <md-button
       class="md-fab md-plain"
@@ -45,7 +45,7 @@
       router
       to="/meetups"
     >
-      <md-icon>arrow_back_ios</md-icon>
+      <md-icon>chevron_left</md-icon>
     </md-button>
   </div>
 </template>
@@ -56,9 +56,6 @@ export default {
   props: ["id"],
   computed: {
     loadMeetup() {
-      return this.$store.getters.loadMeetUp(this.id);
-    },
-    time() {
       return this.$store.getters.loadMeetUp(this.id);
     }
   }

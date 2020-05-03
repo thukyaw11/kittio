@@ -25,9 +25,10 @@
           <md-input v-model="password" type="password"></md-input>
         </md-field>
         <router-link to="/signup">Don't have an account?</router-link>
+        <br><br>
         <md-button
           class="md-raised md-primary"
-          style="float: right"
+          style="width : 95%"
           :disabled="!formisValid"
           @click="onSignIn"
         >Sign In</md-button>

@@ -28,14 +28,16 @@
           <md-input v-model="password" type="password"></md-input>
         </md-field>
         <router-link to="/signin">Already have an account?</router-link>
-
+        <br><br>
         <md-button
           class="md-raised md-primary"
-          style="float: right"
+          style="width : 95%"
           :disabled="!formisValid"
           @click="onSignUp"
         >Sign Up</md-button>
+        
       </a-col>
+     
       <a-col :xs="1" :sm="6" :md="6" :lg="6" :xl="6"></a-col>
     </a-row>
   </div>

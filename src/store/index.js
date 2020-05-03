@@ -6,21 +6,17 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    meetUps: [
-
-    ],
+    meetUps: [],
     user: null,
     loading: false,
     error: null
   },
   mutations: {
     CREATE_NEW_MEETUP(state, payload) {
-      console.log(payload);
       state.meetUps.push(payload);
     },
     SET_USER(state, payload) {
       state.user = payload;
-
     },
     SET_ERROR(state, payload) {
       state.error = payload
@@ -44,6 +40,8 @@ export default new Vuex.Store({
               description: obj[key].description,
               imgURL: obj[key].imageUrl,
               owner: obj[key].owner,
+              position: obj[key].position,
+              feeling: obj[key].feeling,
               createdTime: obj[key].createdTime,
               creatorId: obj[key].creatorId
             })
@@ -52,13 +50,19 @@ export default new Vuex.Store({
         })
         .catch(error => console.log(error))
     },
+    changeProfile({ commit }, payload){
+      let ref = 'posts';
+      firebase.database().ref('posts')
+    },
     createNewMeetup({ commit, getters }, payload) {
-      
+
       const newMeetUp = {
         owner: payload.username,
         description: payload.description,
+        position : payload.position,
+        feeling: payload.feeling,
         createorId: getters.user.id,
-        createdTime : payload.createdTime.toString()
+        createdTime: payload.createdTime.toString()
       }
       let imageUrl
       let key
@@ -79,7 +83,7 @@ export default new Vuex.Store({
         })
         .then(URL => {
           imageUrl = URL
-          console.log(imageUrl)
+         
           return firebase.database().ref('posts').child(key).update({ imageUrl: imageUrl })
         })
         .then(() => {
@@ -97,51 +101,57 @@ export default new Vuex.Store({
 
       commit('CLEAR_ERROR')
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
-      .then(
-         user => {
-           user.user
-             .updateProfile({
-               displayName: payload.username
-             })
-             .then(()=>{
-               const newUser = {
-                 id: user.user.uid,
-                 displayName : user.user.providerData[0].displayName,
-                 registeredMeetups: []
-               }
-               commit('SET_USER', newUser)
+        .then(
+          user => {
 
-             })
+            user.user
+              .updateProfile({
+                displayName: payload.username,
+
+              })
+              .then(() => {
+                const newUser = {
+                  id: user.user.uid,
+                  position: "User",
+                  displayName: user.user.providerData[0].displayName,
+                  registeredMeetups: []
+                }
+                commit('SET_USER', newUser)
+                
+
+              })
 
 
 
-         }
-       )
-       .catch(error => {
+          }
+        )
+        .catch(error => {
           commit('SET_ERROR', error)
         })
     },
     signUserIn({ commit }, payload) {
-     
+
       commit('CLEAR_ERROR')
       firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
         .then(
           user => {
             const newUser = {
               id: user.user.uid,
-              displayName : user.user.providerData[0].displayName,
+              position: user.user.N[0].position,
+              displayName: user.user.providerData[0].displayName,
               registeredMeetups: []
             }
-           
 
             commit('SET_USER', newUser)
+            console.log(newUser);
           }
         ).catch(error => {
           commit('SET_ERROR', error)
         })
     },
     autoSignIn({ commit }, payload) {
-      commit('SET_USER', { id: payload.uid,displayName: payload.providerData[0].displayName,registeredMeetups: [] })
+      console.log(firebase.auth().currentUser.displayName)
+        commit('SET_USER', { id: payload.uid, position: "User", displayName: payload.providerData[0].displayName, registeredMeetups: [] })
     },
     logout({ commit }) {
       firebase.auth().signOut()

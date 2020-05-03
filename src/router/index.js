@@ -8,6 +8,7 @@ import Meetup from '../components//meetup/Meetup'
 import Profile from '../components/user/Profile'
 import SignIn from '../components/user/SignIn'
 import SignUp from '../components/user/SignUp'
+import People from '../components/meetup/People'
 
 
 import AuthGuard from './auth-guard'
@@ -44,6 +45,12 @@ Vue.use(VueRouter)
       name : 'Profile',
       component : Profile,
       beforeEnter: AuthGuard
+    },
+    {
+      path : '/people',
+      name : 'People',
+      component : People,
+      beforeEnter : AuthGuard
     },
     {
       path : '/signup',
