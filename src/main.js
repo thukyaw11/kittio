@@ -17,9 +17,9 @@ Vue.config.productionTip = false;
 
 Vue.use(Antd);
 Vue.use(VueSweetalert2);
-Vue.component('app-alert',Alert);
+Vue.component('app-alert', Alert);
 
-  
+
 Vue.use(VueTimeago, {
   name: 'Timeago', // Component name, `Timeago` by default
   locale: 'en', // Default locale
@@ -31,6 +31,15 @@ Vue.use(VueTimeago, {
   }
 })
 Vue.use(VueMaterial)
+var sliceWord = function (text, length, clamp) {
+  clamp = clamp || '...';
+  var node = document.createElement('div');
+  node.innerHTML = text;
+  var content = node.textContent;
+  return content.length > length ? content.slice(0, length) + clamp : content;
+};
+
+Vue.filter('truncate', sliceWord);
 
 Vue.config.productionTip = false
 
@@ -38,7 +47,7 @@ new Vue({
   router,
   store,
   render: h => h(App),
-  created(){
+  created() {
     firebase.initializeApp({
       apiKey: "AIzaSyBac5NaU_4-4nxN7VQ-ORTloNMUhm30LXs",
       authDomain: "dev-meet-1a9ef.firebaseapp.com",
@@ -49,11 +58,14 @@ new Vue({
       appId: "1:413274064631:web:d47ee57dc4ed4b8ba675f2",
       measurementId: "G-5J8GMW2V60"
     }),
-    firebase.auth().onAuthStateChanged((user)=> {
-      if(user){
-        this.$store.dispatch('autoSignIn', user)
-      }
-    })
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          this.$store.dispatch('autoSignIn', user);
+          this.$store.dispatch('loadMyProfilePost', user.uid);
+
+        }
+      })
     this.$store.dispatch('loadMeetUps');
+    this.$store.dispatch('loadUser');
   }
 }).$mount('#app')

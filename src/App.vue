@@ -1,17 +1,26 @@
 <template>
   <div id="app">
-    <md-toolbar md-elevation="0" class="md-primary" id="toolbar">
+    <md-toolbar md-elevation="0" id="toolbar" style="background : white">
       <md-button class="md-icon-button" @click="showNavigation = true" id="drawerIcon">
-        <md-icon>menu</md-icon>
+        <md-icon>sort</md-icon>
       </md-button>
       <span class="md-title" style="flex : 1">
-        <router-link to="/" style="cursor : pointer; color: white; text-decoration: none">Kittio</router-link>
+        <router-link
+          to="/"
+          style="cursor : pointer; color: white; text-decoration: none; color : black"
+        >Kittio</router-link>
       </span>
-      <md-badge md-content="17" style="margin-right : 10px">
-        <md-button class="md-icon-button">
-          <md-icon>notifications</md-icon>
-        </md-button>
-      </md-badge>
+      <md-button class="md-icon-button">
+        <md-icon>search</md-icon>
+      </md-button>
+      <md-avatar class="md-small">
+        <router-link to="/profile" style="height: 100%">
+          <img
+            src="https://images.unsplash.com/photo-1521988597352-a2c0b9e9108f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+            alt="Avatar"
+          />
+        </router-link>
+      </md-avatar>
       <div v-for="(item,index) in menuItems" v-bind:key="index">
         <router-link :to="item.link">
           <md-button @click="showSidepanel = true" class="md-small-hide">
@@ -21,11 +30,11 @@
         </router-link>
       </div>
       <md-button class="md-small-hide" v-if="isUserAuth" @click="logout">
-        <md-icon>exit_to_app</md-icon> Logout
+        <md-icon>exit_to_app</md-icon>Logout
       </md-button>
     </md-toolbar>
 
-    <md-drawer :md-active.sync="showNavigation" md-swipeable style="position: fix">
+    <md-drawer :md-active.sync="showNavigation" md-swipeable style="position: fixed">
       <md-toolbar class="md-transparent" md-elevation="0">
         <span class="md-title">Kittio</span>
       </md-toolbar>
@@ -72,16 +81,17 @@ export default {
       ];
       if (this.isUserAuth) {
         menuItems = [
-          { icon: "pets", title: "View Kitty", link: "/meetups" },
           {
             icon: "launch",
             title: "Create Pose",
             link: "/meetup/new"
           },
+          { icon: "pets", title: "View Kitty", link: "/meetups" },
+
           {
-            icon : "supervisor_account",
-            title : "People on Kittio",
-            link : '/people'
+            icon: "supervisor_account",
+            title: "People on Kittio",
+            link: "/people"
           },
           { icon: "person", title: "My Account", link: "/profile" }
         ];
@@ -96,11 +106,11 @@ export default {
       );
     }
   },
-  methods:{
-    logout(){
+  methods: {
+    logout() {
       this.showNavigation = false;
-      this.$store.dispatch('logout')
-      this.$router.push('/');
+      this.$store.dispatch("logout");
+      this.$router.push("/");
     }
   }
 };
