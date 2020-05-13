@@ -3,7 +3,7 @@
     <br />
     <a-row>
       <a-col :xs="0" :sm="6" :md="6" :lg="6" :xl="8"></a-col>
-      <a-col :xs="24" :sm="12" :md="12" :lg="12" :xl="8">
+      <a-col :xs="24" :sm="12" :md="12" :lg="12" :xl="8" style="font-family: 'Roboto', sans-serif;">
         <md-card class="md-elevation-0">
           <md-card-media v-if="loadMeetup.imgURL">
             <img :src="loadMeetup.imgURL" alt="People" />
@@ -27,7 +27,8 @@
               <!-- <h3>}</h3> -->
               <md-list-item>
                 <md-avatar>
-                  <img
+                  <img :src="loadMeetup.profileUrl" alt="" v-if="loadMeetup.profileUrl">
+                  <img v-else
                     src="https://images.unsplash.com/photo-1521988597352-a2c0b9e9108f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
                     alt="Avatar"
                   />
@@ -96,11 +97,12 @@
 
 
 <script>
+import store from '@/store/index'
 export default {
   props: ["id"],
   computed: {
     loadMeetup() {
-      return this.$store.getters.loadMeetUp(this.id);
+      return store.getters['posts/loadMeetUp'](this.id);
     }
   }
 };

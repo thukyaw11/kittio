@@ -9,6 +9,7 @@
     "commit": "git-cz"
   },
   "dependencies": {
+    "@tensorflow/tfjs": "^1.7.4",
     "ant-design-vue": "^1.5.3",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",

@@ -21,7 +21,6 @@
           <div @click="onPickFile" class="photo_upload" v-if="!imageURL">
             <md-avatar class="md-avatar-icon md-large" style="background: grey;">
               <md-icon>add_photo_alternate</md-icon>
-
               <input
                 type="file"
                 name
@@ -118,11 +117,13 @@
         </md-button>
       </a-col>
       <a-col :xs="1" :sm="6" :md="6" :lg="6" :xl="6"></a-col>
+
     </a-row>
   </div>
 </template>
 
 <script>
+import store from '@/store/index'
 export default {
   data() {
     return {
@@ -141,16 +142,16 @@ export default {
   },
   computed: {
     emailValidate() {
-      if(this.email){
-      var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{3,}))$/;
-      return re.test(this.email);
+      if (this.email) {
+        var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{3,}))$/;
+        return re.test(this.email);
       }
       return true;
     },
     ageValidate() {
-      return this.petAge < 16;
+      return this.petAge <= 16;
     },
-    phoneNumValidate(){
+    phoneNumValidate() {
       return this.phNum.length < 12;
     },
     validEmail() {
@@ -163,10 +164,10 @@ export default {
         "md-invalid": !this.ageValidate
       };
     },
-    validPhoneNum(){
+    validPhoneNum() {
       return {
-        "md-invalid" : !this.phoneNumValidate
-      }
+        "md-invalid": !this.phoneNumValidate
+      };
     },
     formisValid() {
       return (
@@ -177,14 +178,12 @@ export default {
         this.phNum != "" &&
         this.petAge != "" &&
         this.petAge <= 16 &&
+        this.petAge > 0 &&
         this.gender != "" &&
         this.address != "" &&
         this.email != "" &&
         this.emailValidate == true
       );
-    },
-    user() {
-      return this.$store.getters.user;
     }
   },
   methods: {
@@ -200,10 +199,10 @@ export default {
       if (!this.image) {
         return;
       }
-      console.log(this.usernae);
       const dateNow = new Date(Date.now() - 20000);
       const meetupOption = {
-        username: this.$store.getters.user.displayName,
+        username: store.getters["users/user"].displayName,
+        profileUrl: store.getters["users/user"].profileUrl,
         petName: this.petName,
         petAge: this.petAge,
         genetic: this.genetic,
@@ -211,14 +210,13 @@ export default {
         phNum: this.phNum,
         address: this.address,
         description: this.description,
-        position: this.$store.getters.user.position,
+        position: store.getters["users/user"].position,
         email: this.email,
         image: this.image,
         createdTime: dateNow
       };
-      // console.log(meetupOption);
 
-      this.$store.dispatch("createNewMeetup", meetupOption);
+      store.dispatch("posts/createNewMeetup", meetupOption);
       this.$router.push("/meetups");
     },
     onPickFile() {

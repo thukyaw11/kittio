@@ -31,10 +31,11 @@
 </template>
 
 <script>
+import store from '@/store/index'
 export default {
   computed: {
     user() {
-      return this.$store.getters.user;
+      return store.getters['users/user'];
     }
   }
 };

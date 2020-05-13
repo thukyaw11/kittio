@@ -60,12 +60,14 @@ new Vue({
     }),
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
+          this.$store.dispatch('users/autoSignIn', user);
           this.$store.dispatch('autoSignIn', user);
-          this.$store.dispatch('loadMyProfilePost', user.uid);
+
+          this.$store.dispatch('users/loadMyProfilePost', user.uid);
 
         }
       })
-    this.$store.dispatch('loadMeetUps');
-    this.$store.dispatch('loadUser');
+    this.$store.dispatch('posts/loadMeetUps');
+    this.$store.dispatch('users/loadUser');
   }
 }).$mount('#app')
