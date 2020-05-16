@@ -6,6 +6,8 @@ import store from './store'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
+import Vuetify from 'vuetify';
+import 'vuetify/dist/vuetify.min.css'
 import Antd from 'ant-design-vue';
 import * as firebase from 'firebase';
 import Alert from './components/share/Alert'
@@ -16,6 +18,7 @@ import 'ant-design-vue/dist/antd.css';
 Vue.config.productionTip = false;
 
 Vue.use(Antd);
+Vue.use(Vuetify);
 Vue.use(VueSweetalert2);
 Vue.component('app-alert', Alert);
 
@@ -44,6 +47,7 @@ Vue.filter('truncate', sliceWord);
 Vue.config.productionTip = false
 
 new Vue({
+  vuetify : new Vuetify(),
   router,
   store,
   render: h => h(App),
@@ -67,7 +71,7 @@ new Vue({
 
         }
       })
-    this.$store.dispatch('posts/loadMeetUps');
+    this.$store.dispatch('posts/loadFeeds');
     this.$store.dispatch('users/loadUser');
   }
 }).$mount('#app')

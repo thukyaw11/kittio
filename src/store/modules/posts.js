@@ -3,41 +3,35 @@ import * as firebase from 'firebase';
 export const namespaced = true
 
 export const state = {
-      meetUps: []
+      feeds: []
 }
 
 export const mutations = {
-  CREATE_NEW_MEETUP(state, payload) {
-    state.meetUps.push(payload);
+  CREATE_NEW_FEED(state, payload) {
+    state.feeds.push(payload);
   },
-  SET_LOADED_MEETUP(state, payload) {
-    state.meetUps = payload;
+  SET_LOADED_FEEDS(state, payload) {
+    state.feeds = payload;
   },
 }
 
 export const actions = {
-  createNewMeetup({ commit }, payload) {
-    const newMeetUp = {
+  createNewFeed({ commit }, payload) {
+    const newFeed = {
       owner: payload.username,
-      petName: payload.petName,
       profileUrl : payload.profileUrl,
-      petAge: payload.petAge,
-      genetic: payload.genetic,
-      gender: payload.gender,
-      phNum: payload.phNum,
-      address: payload.address,
+      title : payload.title,
       description: payload.description,
       position: payload.position,
-      email: payload.email,
       createorId: firebase.auth().currentUser.uid,
       createdTime: payload.createdTime.toString()
     }
-    console.log(newMeetUp);
+    
 
     let imageUrl
     let key
     let ext
-    firebase.database().ref('posts').push(newMeetUp)
+    firebase.database().ref('posts').push(newFeed)
       .then((data) => {
         key = data.key;
         return key
@@ -57,8 +51,8 @@ export const actions = {
         return firebase.database().ref('posts').child(key).update({ imageUrl: imageUrl })
       })
       .then(() => {
-        commit('CREATE_NEW_MEETUP', {
-          ...newMeetUp,
+        commit('CREATE_NEW_FEED', {
+          ...newFeed,
           imageUrl: imageUrl,
           id: key
         });
@@ -69,22 +63,16 @@ export const actions = {
   },
 
   //load posts
-  loadMeetUps({ commit }) {
+  loadFeeds({ commit }) {
     firebase.database().ref('posts').once('value')
       .then((data) => {
-        const meetups = [];
+        const feeds = [];
         const obj = data.val()
         for (let key in obj) {
-          meetups.push({
+          feeds.push({
             id: key,
-            petName: obj[key].petName,
             profileUrl : obj[key].profileUrl,
-            petAge: obj[key].petAge,
-            phNum: obj[key].phNum,
-            address: obj[key].address,
-            email: obj[key].email,
-            gender: obj[key].gender,
-            genetic: obj[key].genetic,
+            title : obj[key].title,
             description: obj[key].description,
             imgURL: obj[key].imageUrl,
             owner: obj[key].owner,
@@ -93,7 +81,7 @@ export const actions = {
             creatorId: obj[key].createorId
           })
         }
-        commit('SET_LOADED_MEETUP', meetups);
+        commit('SET_LOADED_FEEDS', feeds);
       })
       .catch(error => console.log(error))
   },
@@ -101,12 +89,12 @@ export const actions = {
 
 
 export const getters = {
-  loadMeetUps(state) {
-    return state.meetUps.slice().reverse();
+  loadFeeds(state) {
+    return state.feeds.slice().reverse();
   },
-  loadMeetUp(state) {
+  loadFeed(state) {
     return (meetupid) => {
-      return state.meetUps.find((meetup) => {
+      return state.feeds.find((meetup) => {
         return meetup.id == meetupid;
       })
     }

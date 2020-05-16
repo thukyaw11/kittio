@@ -53,10 +53,7 @@ export default new Vuex.Store({
 
   },
   actions: {
-
-
     autoSignIn({ commit }, payload) {
-
       commit('SET_USER', { id: payload.uid, position: "User", displayName: payload.providerData[0].displayName, profileUrl : payload.photoURL, registeredMeetups: [] })
     },
     logout({ commit }) {

@@ -1,14 +1,15 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Home from '../components/Home';
-import CreateMeetupPage from '../components/meetup/CreateMeetupPage'
-import Meetups from '../components/meetup/MeetupPage'
-import Meetup from '../components//meetup/Meetup'
+
+import CreateNewPost from '../components/feed/CreateNewPost';
+import Feed from '../components/feed/Feed'
+import Feeds from '../components/feed/Feeds'
 import Profile from '../components/user/Profile'
 import SignIn from '../components/user/SignIn'
 import SignUp from '../components/user/SignUp'
 import People from '../components/meetup/People'
+import Test from '../components/meetup/test'
 
 
 import AuthGuard from './auth-guard'
@@ -17,29 +18,22 @@ Vue.use(VueRouter)
 
   const routes = [
     {
-      path : '/',
-      name : 'Home',
-      component :Home,
-      beforeEnter: AuthGuard
-
-    },
-    {
-      path : '/meetups',
-      name : 'Meetups',
-      component :Meetups,
+      path : '/feeds',
+      name : 'Feeds',
+      component :Feeds,
       beforeEnter: AuthGuard
     },
     {
-      path : '/meetups/:id',
-      name : 'Meetup',
+      path : '/feed/:id',
+      name : 'Feed',
       props : true,
-      component : Meetup,
+      component : Feed,
       beforeEnter: AuthGuard
     },
     {
-      path : '/meetup/new',
-      name : 'CreatMeetupPage',
-      component : CreateMeetupPage,
+      path : '/feednew/new',
+      name : 'CreateNewPost',
+      component : CreateNewPost,
       beforeEnter: AuthGuard
     },
     {
@@ -52,6 +46,12 @@ Vue.use(VueRouter)
       path : '/people',
       name : 'People',
       component : People,
+      beforeEnter : AuthGuard
+    },
+    {
+      path : '/test',
+      name : 'Test',
+      component : Test,
       beforeEnter : AuthGuard
     },
     {
