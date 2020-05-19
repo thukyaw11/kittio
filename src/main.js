@@ -47,7 +47,11 @@ Vue.filter('truncate', sliceWord);
 Vue.config.productionTip = false
 
 new Vue({
-  vuetify : new Vuetify(),
+  vuetify : new Vuetify({
+    icons: {
+      iconfont: 'md'
+    }
+  }),
   router,
   store,
   render: h => h(App),
@@ -64,9 +68,8 @@ new Vue({
     }),
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
-          this.$store.dispatch('users/autoSignIn', user);
           this.$store.dispatch('autoSignIn', user);
-
+          this.$store.dispatch('users/autoSignIn', user);
           this.$store.dispatch('users/loadMyProfilePost', user.uid);
 
         }

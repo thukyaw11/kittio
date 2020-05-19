@@ -8,8 +8,8 @@ import Feeds from '../components/feed/Feeds'
 import Profile from '../components/user/Profile'
 import SignIn from '../components/user/SignIn'
 import SignUp from '../components/user/SignUp'
-import People from '../components/meetup/People'
-import Test from '../components/meetup/test'
+import People from '../components/feed/People'
+
 
 
 import AuthGuard from './auth-guard'
@@ -49,12 +49,6 @@ Vue.use(VueRouter)
       beforeEnter : AuthGuard
     },
     {
-      path : '/test',
-      name : 'Test',
-      component : Test,
-      beforeEnter : AuthGuard
-    },
-    {
       path : '/signup',
       name : 'Signup',
       component : SignUp
@@ -67,7 +61,8 @@ Vue.use(VueRouter)
 ]
 
 const router = new VueRouter({
-  routes
+  routes,
+  mode : 'history'
 })
 
 export default router

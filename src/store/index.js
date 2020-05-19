@@ -59,55 +59,7 @@ export default new Vuex.Store({
     logout({ commit }) {
       firebase.auth().signOut()
       commit('SET_USER', null)
-    },
-    changeProfilePicture({ commit }, payload) {
-      console.log(commit);
-      let key
-      let ext
-      let imageUrl
-      firebase.database().ref('users').push(payload.image)
-        .then((data) => {
-          key = data.key;
-          return key
-        })
-        .then(key => {
-          const filename = payload.image.name
-          ext = filename.slice(filename.lastIndexOf('.'))
-          return firebase.storage().ref('userProfiles/' + key + ext).put(payload.image)
-        })
-        .then(fileData => {
-          console.log(fileData);
-          return firebase.storage().ref('userProfiles/' + key + ext).getDownloadURL()
-        })
-        .then(URL => {
-          imageUrl = URL
-          firebase.database().ref('users').orderByChild("creatorId").equalTo(payload.userId).on("child_added", function (data) {
-            data.ref.update({
-              profileUrl : imageUrl
-            });
-          })
-          let currentUser = firebase.auth().currentUser;
-          currentUser.updateProfile({
-            photoURL: imageUrl
-          });
-          return imageUrl;
-        })
-        .then((url)=>{
-          firebase.database().ref('posts').orderByChild("createorId").equalTo(payload.userId).on("child_added", function (data) {
-            data.ref.update({
-              profileUrl: url
-            });
-          })
-          const user_pp_pic = {
-            userId : firebase.auth().currentUser.uid,
-            url : url
-          }
-          commit('CHANGE_USER_PROFILE_PIC', user_pp_pic)
-        })
-
-
-
-    },
+    }
   },
   getters: {
     user(state) {

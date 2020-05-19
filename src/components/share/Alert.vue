@@ -6,7 +6,6 @@
       type="error"
       closable
       @close="onClose"
-    
     />
   </div>
 </template>

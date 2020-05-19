@@ -17,7 +17,7 @@
         src="https://i.pinimg.com/originals/1a/e0/90/1ae090fce667925b01954c2eb72308b6.gif"
       >
       </v-img>
-      <v-card-title>
+      <v-card-title style="font-size: 28px;line-height: 50px">
         {{loadFeed.title}}
       </v-card-title>
 
@@ -25,11 +25,19 @@
         Author -
         {{loadFeed.owner}}
       </v-card-subtitle>
-      <v-card-text>
+      <v-card-text style="font-size: 18px;line-height: 25px">
         {{loadFeed.description}}
       </v-card-text>
 
     </v-card>
+    <md-button
+      class="md-fab md-plain"
+      style="float: right;position: fixed; bottom : 30px; right: 30px"
+      router
+      to="/feeds"
+    >
+      <md-icon>chevron_left</md-icon>
+    </md-button>  
 
   </v-container>
 </template>

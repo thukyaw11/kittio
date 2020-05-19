@@ -3,9 +3,9 @@ import * as firebase from 'firebase';
 export const namespaced = true
 
 export const state = {
-    user: null,
-    userDatabase: [],
-    myProfile: []
+  user: null,
+  userDatabase: [],
+  myProfile: []
 }
 
 export const mutations = {
@@ -19,19 +19,34 @@ export const mutations = {
     state.myProfile.push(payload.data);
   },
   CHANGE_USER_PROFILE(state, payload) {
-    console.log(this.state.posts);
     const filteredValue = (data) => {
       return data.filter(function (meetup) {
         return meetup.creatorId == payload.userId;
       })
 
     }
-    const toChange = filteredValue(this.state.posts.meetUps);
+    const toChange = filteredValue(this.state.posts.feeds);
 
     toChange.forEach(element => {
       element.owner = payload.userName
     });
   },
+  CHANGE_USER_PROFILE_PIC(state, payload) {
+    this.state.user.profileUrl = payload.url;
+
+    const filteredValue = (data) => {
+      return data.filter(function (meetup) {
+        return meetup.creatorId == payload.userId
+      })
+    }
+
+    const toChange = filteredValue(this.state.posts.feeds);
+
+    toChange.forEach(element => {
+      element.profileUrl = payload.url
+    });
+  },
+
 }
 
 export const actions = {
@@ -45,7 +60,7 @@ export const actions = {
             id: user.user.uid,
             position: "User",
             displayName: user.user.providerData[0].displayName,
-            profileUrl : user.user.photoURL
+            profileUrl: user.user.photoURL
           }
 
 
@@ -56,7 +71,7 @@ export const actions = {
       })
   },
   autoSignIn({ commit }, payload) {
-    commit('SET_USER', { id: payload.uid, position: "User", displayName: payload.providerData[0].displayName, profileUrl : payload.photoURL})
+    commit('SET_USER', { id: payload.uid, position: "User", displayName: payload.providerData[0].displayName, profileUrl: payload.photoURL })
   },
 
   //user sign up
@@ -116,23 +131,78 @@ export const actions = {
       })
   },
   //load profile posts
-      loadMyProfilePost({ commit }, payload) {
-        firebase.database().ref('posts').orderByChild("createorId").equalTo(payload).on("child_added", function (data) {
-          const arrayOption = {
-            data: data.val()
-          }
-          commit('LOAD_PROFILE_POST', arrayOption);
+  loadMyProfilePost({ commit }, payload) {
+    firebase.database().ref('posts').orderByChild("createorId").equalTo(payload).on("child_added", function (data) {
+      const arrayOption = {
+        data: data.val()
+      }
+      commit('LOAD_PROFILE_POST', arrayOption);
+    });
+  },
+  //change user profile name
+  changeuserprofile({ commit }, payload) {
+    firebase.database().ref('posts').orderByChild("createorId").equalTo(payload.userId).on("child_added", function (data) {
+      data.ref.update({
+        owner: payload.userName
+      });
+    })
+
+    firebase.database().ref('users').orderByChild("createorId").equalTo(payload.userId).on("child_added", function (data) {
+      data.ref.update({
+        userName: payload.userName
+      });
+    })
+    commit('CHANGE_USER_PROFILE', payload)
+  },
+  //change user profile picture
+  changeProfilePicture({ commit }, payload) {
+    console.log(commit);
+    let key
+    let ext
+    let imageUrl
+    firebase.database().ref('users').push(payload.image)
+      .then((data) => {
+        key = data.key;
+        return key
+      })
+      .then(key => {
+        const filename = payload.image.name
+        ext = filename.slice(filename.lastIndexOf('.'))
+        return firebase.storage().ref('userProfiles/' + key + ext).put(payload.image)
+      })
+      .then(fileData => {
+        console.log(fileData);
+        return firebase.storage().ref('userProfiles/' + key + ext).getDownloadURL()
+      })
+      .then(URL => {
+        imageUrl = URL
+        firebase.database().ref('users').orderByChild("creatorId").equalTo(payload.userId).on("child_added", function (data) {
+          data.ref.update({
+            profileUrl: imageUrl
+          });
+        })
+        let currentUser = firebase.auth().currentUser;
+        currentUser.updateProfile({
+          photoURL: imageUrl
         });
-      },
-    //change user profileUrl
-    changeuserprofile({ commit }, payload) {
-          firebase.database().ref('posts').orderByChild("createorId").equalTo(payload.userId).on("child_added", function (data) {
-            data.ref.update({
-              owner: payload.userName
-            });
-          })
-          commit('CHANGE_USER_PROFILE', payload)
-        },
+        return imageUrl;
+      })
+      .then((url) => {
+        firebase.database().ref('posts').orderByChild("createorId").equalTo(payload.userId).on("child_added", function (data) {
+          data.ref.update({
+            profileUrl: url
+          });
+        })
+        const user_pp_pic = {
+          userId: firebase.auth().currentUser.uid,
+          url: url
+        }
+        commit('CHANGE_USER_PROFILE_PIC', user_pp_pic)
+      })
+
+
+
+  },
 
 }
 

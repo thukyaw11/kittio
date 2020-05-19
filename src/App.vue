@@ -103,8 +103,8 @@ export default {
   computed: {
     menuItems() {
       let menuItems = [
-        { icon: "mdi-message", text: "Sign Up", link: "/signup" },
-        { icon: "mdi-message", text: "Sign In", link: "/signin" }
+        { icon: "mdi-plus", text: "Sign Up", link: "/signup" },
+        { icon: "mdi-login", text: "Sign In", link: "/signin" }
       ];
       if (this.isUserAuth) {
         menuItems = [
@@ -115,11 +115,11 @@ export default {
             link: "/feednew/new"
           },
           {
-            icon: "mdi-accountmultiple",
+            icon: "group",
             text: "People",
             link: "/people"
           },
-          { icon: "mdi-account", text: "Profile", link: "/profile" }
+          { icon: "account_circle", text: "Profile", link: "/profile" }
         ];
       }
 
