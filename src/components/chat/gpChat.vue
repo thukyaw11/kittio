@@ -66,8 +66,6 @@
 
 <script>
 import createMessage from "./createMessage";
-import fb from "@/firebase/init";
-import moment from "moment";
 import store from "@/store/index"
 
 export default {
@@ -77,70 +75,34 @@ export default {
 
   data() {
     return {
-      messages: [],
       channels: [
         "messages",
-        "webDesign",
-        "Vue",
-        "Vuex",
-        "App devers",
-        "Home 2"
+        "UITers",
+        "Feel",
+        'WYTUers'
       ]
     };
   },
   methods: {
     changeChannel(channelName) {
-      this.messages = [];
       store.dispatch('chat/changeChannel', channelName);
+
     }
   },
   watch: {
     currentChannel() {
-      this.messages = []
-      let ref = fb
-        .firestore()
-        .collection(this.currentChannel)
-        .orderBy("timestamp");
-
-      ref.onSnapshot(snapshot => {
-        snapshot.docChanges().forEach(change => {
-          if (change.type == "added") {
-            let doc = change.doc;
-            this.messages.push({
-              id: doc.id,
-              name: doc.data().name,
-              message: doc.data().message,
-              timestamp: moment(doc.data().timestamp).format("LTS")
-            });
-          }
-        });
-      });
+      store.dispatch('chat/loadMessages');
     }
   },
   created() {
-    this.messages = [];
-    let ref = fb
-      .firestore()
-      .collection(this.currentChannel)
-      .orderBy("timestamp");
-
-    ref.onSnapshot(snapshot => {
-      snapshot.docChanges().forEach(change => {
-        if (change.type == "added") {
-          let doc = change.doc;
-          this.messages.push({
-            id: doc.id,
-            name: doc.data().name,
-            message: doc.data().message,
-            timestamp: moment(doc.data().timestamp).format("LTS")
-          });
-        }
-      });
-    });
+    store.dispatch('chat/loadMessages');
   },
   computed: {
     currentChannel() {
       return store.getters["chat/currentChannel"];
+    },
+    messages(){
+      return store.getters["chat/messages"];
     }
   }
 };

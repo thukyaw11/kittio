@@ -15,7 +15,6 @@
 
 </template>
 <script>
-import fb from "@/firebase/init";
 import store from "@/store/index";
 export default {
   name: "createMessage",
@@ -26,22 +25,8 @@ export default {
   },
   methods: {
     createMessage() {
-      if (this.newMessage) {
-        fb.firestore()
-          .collection(this.currentChannel)
-          .add({
-            message: this.newMessage,
-            name: store.getters["users/user"].displayName,
-            timestamp: Date.now()
-          })
-          .then(() => {
-            console.log("sent");
-          })
-          .catch(err => {
-            console.log(err);
-          });
-        this.newMessage = null;
-      }
+      store.dispatch('chat/onCreateMessage', this.newMessage);
+      this.newMessage = null;
     }
   },
   computed: {
