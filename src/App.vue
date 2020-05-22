@@ -115,8 +115,8 @@ export default {
             link: "/feednew/new"
           },
           {
-            icon: "group",
-            text: "People",
+            icon: "chat",
+            text: "Chat",
             link: "/people"
           },
           { icon: "account_circle", text: "Profile", link: "/profile" }

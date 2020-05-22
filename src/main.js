@@ -9,10 +9,12 @@ import 'vue-material/dist/theme/default.css'
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css'
 import Antd from 'ant-design-vue';
-import * as firebase from 'firebase';
 import Alert from './components/share/Alert'
 import VueTimeago from 'vue-timeago'
 import VueSweetalert2 from 'vue-sweetalert2';
+import fb from './firebase/init'
+import VueChatScroll from 'vue-chat-scroll';
+
 
 import 'ant-design-vue/dist/antd.css';
 Vue.config.productionTip = false;
@@ -20,6 +22,7 @@ Vue.config.productionTip = false;
 Vue.use(Antd);
 Vue.use(Vuetify);
 Vue.use(VueSweetalert2);
+Vue.use(VueChatScroll);
 Vue.component('app-alert', Alert);
 
 
@@ -56,17 +59,7 @@ new Vue({
   store,
   render: h => h(App),
   created() {
-    firebase.initializeApp({
-      apiKey: "AIzaSyBac5NaU_4-4nxN7VQ-ORTloNMUhm30LXs",
-      authDomain: "dev-meet-1a9ef.firebaseapp.com",
-      databaseURL: "https://dev-meet-1a9ef.firebaseio.com",
-      projectId: "dev-meet-1a9ef",
-      storageBucket: "gs://dev-meet-1a9ef.appspot.com",
-      messagingSenderId: "413274064631",
-      appId: "1:413274064631:web:d47ee57dc4ed4b8ba675f2",
-      measurementId: "G-5J8GMW2V60"
-    }),
-      firebase.auth().onAuthStateChanged((user) => {
+      fb.auth().onAuthStateChanged((user) => {
         if (user) {
           this.$store.dispatch('autoSignIn', user);
           this.$store.dispatch('users/autoSignIn', user);

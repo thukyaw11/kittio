@@ -3,13 +3,15 @@ import Vuex from 'vuex'
 import * as firebase from 'firebase';
 import * as users from '@/store/modules/users.js'
 import * as posts from '@/store/modules/posts.js'
+import * as chat from '@/store/modules/chat.js'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules : {
     users,
-    posts
+    posts,
+    chat
   },
   state: {
     meetUps: [],

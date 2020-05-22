@@ -1,52 +1,5 @@
 <template>
-  <!-- <div>
-    <a-row>
-      <a-col :xs="0" :sm="6" :md="6" :lg="6" :xl="6"></a-col>
-      <a-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" style="font-family: 'Roboto', sans-serif;">
-        <div style="margin : 0 auto; height: 100%; width : 100%;" class="cover_image">
-          <img src="../../assets/signincover.svg" alt="kitty" style="margin: 0 auto;width:100%" />
-        </div>
-        <div id="form_gp">
-
-
-        <div style="font-size : 30px;">Sign Up</div>
-        <br />
-
-        <br />
-        <md-field>
-          <md-icon>account_circle</md-icon>
-          <label>User Name</label>
-          <md-textarea v-model="username" md-autogrow maxlength="20"></md-textarea>
-        </md-field>
-        <md-field>
-          <md-icon>email</md-icon>
-          <label>Email</label>
-          <md-textarea v-model="email" md-autogrow></md-textarea>
-        </md-field>
-        <md-field>
-          <md-icon>lock_open</md-icon>
-          <label>Password</label>
-          <md-input v-model="password" type="password"></md-input>
-        </md-field>
-        <router-link to="/signin">Already have an account?</router-link>
-        <br><br>
-        <md-button
-          class="md-raised md-primary"
-          style=" width: 100%; color: white; margin: 0"
-          :style="formisValid? 'background-color: rgb(34, 34, 70)' : 'background-color: rgb(34, 34, 70, 0.5)'"
-          :disabled="!formisValid"
-          
-
-        >Sign Up</md-button>
-          </div>
-
-      </a-col>
-
-      <a-col :xs="0" :sm="6" :md="6" :lg="6" :xl="6"></a-col>
-    </a-row>
-  </div> -->
-
-  <v-container
+ <v-container
     class="fill-height"
     fluid
   >
